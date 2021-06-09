@@ -20,7 +20,7 @@ package com.czy.leetcode.dyp;
 class Solution8 {
 
     public static void main(String[] args) {
-        System.out.println(translateNum(12258));
+        System.out.println(translateNum(506));
     }
 
     /**
@@ -42,23 +42,44 @@ class Solution8 {
     public static int translateNum(int num) {
         String[] numArray = String.valueOf(num).split("");
         if (numArray.length == 1) {
-            return num;
+            return 1;
         }
         int pre1 = 0;
         int pre2 = 1;
         int res = 0;
-        for (int i = 1; i < numArray.length; i++) {
-            String s = numArray[i - 1] + numArray[i];
+        for (int i = 0; i < numArray.length; i++) {
+            String s = i > 0 ? numArray[i - 1] + numArray[i] : numArray[i];
             int flag = Integer.parseInt(s);
-            if (flag > 0 && flag <= 26) {
+            if (flag >= 10 && flag < 26) {
                 res = pre1 + pre2;
             } else {
-                res = pre1;
+                res = pre2;
             }
             pre1 = pre2;
             pre2 = res;
         }
         return res;
     }
+
+    /**
+     * leetcode
+     *
+     * @param num
+     * @return
+     */
+    public int translateNum2(int num) {
+        String numStr = String.valueOf(num);
+        int len = numStr.length();
+        int x = 1;
+        int y = 1;
+        for (int i = 2; i <= len; i++) {
+            String sub = numStr.substring(i - 2, i);
+            int z = sub.compareTo("10") >= 0 && sub.compareTo("25") <= 0 ? x + y : x;
+            y = x;
+            x = z;
+        }
+        return x;
+    }
+
 
 }
